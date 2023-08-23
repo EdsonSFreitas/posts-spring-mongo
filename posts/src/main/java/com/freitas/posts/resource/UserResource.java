@@ -25,10 +25,6 @@ public class UserResource {
 
     @GetMapping
     public ResponseEntity<List<User>> findAll() {
-        /*User maria = new User("1", "Maria", "maria@egmail.com");
-        User alex = new User("2", "Alex", "alex@egmail.com");
-        List<User> list = new ArrayList<>();
-        list.addAll(Arrays.asList(maria, alex));*/
         return ResponseEntity.ok().body(service.findAll());
     }
 }

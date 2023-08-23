@@ -1,6 +1,7 @@
 package com.freitas.posts.repository;
 
 import com.freitas.posts.domain.User;
+import com.freitas.posts.dto.UserDTO;
 import org.springframework.data.mongodb.repository.MongoRepository;
 
 /**

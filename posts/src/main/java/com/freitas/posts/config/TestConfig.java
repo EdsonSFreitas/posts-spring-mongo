@@ -1,6 +1,7 @@
 package com.freitas.posts.config;
 
 import com.freitas.posts.domain.User;
+import com.freitas.posts.dto.UserDTO;
 import com.freitas.posts.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
@@ -25,10 +26,12 @@ public class TestConfig implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
 
-        User maria = new User("1", "Ruby", "ruby@gmail.com");
-        User alex = new User("2", "Maribel", "maribel@gmail.com");
-        List<User> list = new ArrayList<>();
-        list.addAll(Arrays.asList(maria, alex));
-        repository.saveAll(list);
+        repository.deleteAll();
+        User u1 = new User(null, "Maria Brown", "maria@gmail.com");
+        User u2 = new User(null, "Alex Green", "alex@gmail.com");
+        User u3 = new User(null, "Bob Grey", "bob@gmail.com");
+        User u4 = new User(null, "Ruby", "ruby@gmail.com");
+        User u5 = new User(null, "Maribel", "maribel@gmail.com");
+        repository.saveAll(List.of(u1, u2, u3, u4, u5));
     }
 }

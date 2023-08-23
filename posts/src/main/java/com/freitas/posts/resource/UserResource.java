@@ -5,11 +5,10 @@ import com.freitas.posts.dto.UserDTO;
 import com.freitas.posts.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import java.net.URI;
 import java.util.List;
 
 /**
@@ -34,4 +33,31 @@ public class UserResource {
         UserDTO userDTO = new UserDTO(user.getId(), user.getName(), user.getEmail());
         return ResponseEntity.ok().body(userDTO);
     }
+
+    @PostMapping()
+    public ResponseEntity<Void> insert(@RequestBody UserDTO userDTO) {
+        User user = service.fromDTO(userDTO);
+        user = service.insert(user);
+        URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
+                .buildAndExpand(user.getId()).toUri();
+        return ResponseEntity.created(uri).build();
+    }
+
+    /* //Desse modo retornará o objeto UserDTO com id, nome e email ao invés de retornar vazio
+		@PostMapping()
+    public ResponseEntity<UserDTO> insert(@RequestBody UserDTO userDTO) {
+        User user = service.fromDTO(userDTO);
+        user = service.insert(user);
+        URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
+                .buildAndExpand(user.getId()).toUri();
+        return ResponseEntity.created(uri).body(new UserDTO(user));
+    } */
+
+    /*@PostMapping() //Usando User ao inves de DTO, esta errado!
+    public ResponseEntity<User> insert(@RequestBody User user) {
+        user = service.insert(user);
+        URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
+                .buildAndExpand(user.getId()).toUri();
+        return ResponseEntity.created(uri).body(user);
+    }*/
 }

@@ -3,6 +3,7 @@ package com.freitas.posts.service;
 import com.freitas.posts.domain.User;
 import com.freitas.posts.dto.UserDTO;
 import com.freitas.posts.repository.UserRepository;
+import com.freitas.posts.service.exception.ObjNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,9 +19,13 @@ public class UserService {
     @Autowired
     private UserRepository repository;
 
-    public List<UserDTO> findAll(){
+    public List<UserDTO> findAll() {
         List<User> users = repository.findAll();
         return users.stream().map(UserDTO::new).collect(java.util.stream.Collectors.toList());
+    }
+
+    public User findById(String id) {
+        return repository.findById(id).orElseThrow(() -> new ObjNotFoundException("Objeto não encontrado"));
     }
 
 }

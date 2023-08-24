@@ -1,5 +1,6 @@
 package com.freitas.posts.resource;
 
+import com.freitas.posts.domain.Post;
 import com.freitas.posts.domain.User;
 import com.freitas.posts.dto.UserDTO;
 import com.freitas.posts.service.UserService;
@@ -35,6 +36,12 @@ public class UserResource {
         return ResponseEntity.ok().body(userDTO);
     }
 
+    @GetMapping("/{id}/posts")
+    public ResponseEntity<List<Post>> findPostsById(@PathVariable String id) {
+        User user = service.findById(id);
+        return ResponseEntity.ok().body(user.getPosts());
+    }
+
     @PostMapping()
     public ResponseEntity<Void> insert(@RequestBody UserDTO userDTO) {
         User user = service.fromDTO(userDTO);
@@ -42,8 +49,6 @@ public class UserResource {
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
                 .buildAndExpand(user.getId()).toUri();
         return ResponseEntity.created(uri).build();
-
-
     /* Desse modo retornará o objeto UserDTO com id, nome e email ao invés de retornar vazio,
     mas padrao é retornar apenas vazio e com location no header
 		@PostMapping()

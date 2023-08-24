@@ -25,18 +25,23 @@ public class UserService {
     }
 
     public User findById(String id) {
-        return repository.findById(id).orElseThrow(() -> new ObjNotFoundException("Objeto não encontrado"));
+        return repository.findById(id).orElseThrow(() -> new ObjNotFoundException("Objeto não encontrado!"));
         // O findOne() pode pode retornar um documento arbitrario se id nao existir, preferir usar o findById
     }
 
-    public User insert(User user){
+    public User insert(User user) {
         return repository.insert(user);
         //Usar insert() sempre que for necessario apenas criar um documento novo
         //Usar save() ira atualizar o objeto se ja existir, caso contrario ira criar um novo
     }
 
-    public User fromDTO (UserDTO dto){
+    public User fromDTO(UserDTO dto) {
         return new User(dto.getId(), dto.getName(), dto.getEmail());
+    }
+
+    public void delete(String id) {
+        User user = findById(id); //Se id nao existir lanca excecao desse metodo
+        repository.deleteById(user.getId());
     }
 
 }

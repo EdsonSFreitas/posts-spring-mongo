@@ -41,8 +41,6 @@ public class UserResource {
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
                 .buildAndExpand(user.getId()).toUri();
         return ResponseEntity.created(uri).build();
-    }
-
     /* //Desse modo retornará o objeto UserDTO com id, nome e email ao invés de retornar vazio
 		@PostMapping()
     public ResponseEntity<UserDTO> insert(@RequestBody UserDTO userDTO) {
@@ -52,7 +50,6 @@ public class UserResource {
                 .buildAndExpand(user.getId()).toUri();
         return ResponseEntity.created(uri).body(new UserDTO(user));
     } */
-
     /*@PostMapping() //Usando User ao inves de DTO, esta errado!
     public ResponseEntity<User> insert(@RequestBody User user) {
         user = service.insert(user);
@@ -60,4 +57,13 @@ public class UserResource {
                 .buildAndExpand(user.getId()).toUri();
         return ResponseEntity.created(uri).body(user);
     }*/
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> delete(@PathVariable String id) {
+        User user = service.findById(id); //Lanca excecao se id nao existir
+        service.delete(user.getId());
+        return ResponseEntity.noContent().build();
+    }
+
 }

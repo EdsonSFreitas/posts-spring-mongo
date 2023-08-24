@@ -17,7 +17,7 @@ import java.time.Instant;
 @ControllerAdvice
 public class ResourceExceptionHandler extends RuntimeException {
     @ExceptionHandler(ObjNotFoundException.class)
-    public ResponseEntity<StandardError> ObjNotFoundException(ObjNotFoundException e, HttpServletRequest request) {
+    public ResponseEntity<StandardError> ObjNotFoundException( ObjNotFoundException e, HttpServletRequest request) {
         String error = "Resource not found";
         HttpStatus status = HttpStatus.NOT_FOUND;
         StandardError err = new StandardError(Instant.now(), status.value(), error, e.getMessage(), request.getRequestURI());

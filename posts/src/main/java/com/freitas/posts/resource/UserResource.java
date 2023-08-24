@@ -42,7 +42,10 @@ public class UserResource {
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
                 .buildAndExpand(user.getId()).toUri();
         return ResponseEntity.created(uri).build();
-    /* //Desse modo retornará o objeto UserDTO com id, nome e email ao invés de retornar vazio
+
+
+    /* Desse modo retornará o objeto UserDTO com id, nome e email ao invés de retornar vazio,
+    mas padrao é retornar apenas vazio e com location no header
 		@PostMapping()
     public ResponseEntity<UserDTO> insert(@RequestBody UserDTO userDTO) {
         User user = service.fromDTO(userDTO);
@@ -51,13 +54,6 @@ public class UserResource {
                 .buildAndExpand(user.getId()).toUri();
         return ResponseEntity.created(uri).body(new UserDTO(user));
     } */
-    /*@PostMapping() //Usando User ao inves de DTO, esta errado!
-    public ResponseEntity<User> insert(@RequestBody User user) {
-        user = service.insert(user);
-        URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
-                .buildAndExpand(user.getId()).toUri();
-        return ResponseEntity.created(uri).body(user);
-    }*/
     }
 
     @DeleteMapping("/{id}")
@@ -66,6 +62,18 @@ public class UserResource {
         User user = service.findById(id); //Lanca excecao se id nao existir
         service.delete(user.getId());
         return ResponseEntity.noContent().build();
+        //RFC 7231 recomenda retornar corpo vazio na reposta com codigo 204
+    }
+
+    @PutMapping("/{id}")
+    @Transactional
+    public ResponseEntity<User> update(@RequestBody UserDTO userDTO, @PathVariable String id) {
+        User user = service.fromDTO(userDTO);
+        user.setId(id);
+        user = service.update(user); // Retorna o objeto User atualizado
+        URI location = ServletUriComponentsBuilder.fromCurrentRequest().build().toUri();
+        return ResponseEntity.ok().location(location).body(user);
+        //return ResponseEntity.ok().header("Content-Location", location.toString()).body(user);
     }
 
 }

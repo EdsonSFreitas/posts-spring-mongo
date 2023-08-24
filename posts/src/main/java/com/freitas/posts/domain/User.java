@@ -1,8 +1,8 @@
 package com.freitas.posts.domain;
 
+import com.freitas.posts.dto.UserDTO;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
-import org.springframework.data.mongodb.core.mapping.MongoId;
 
 import java.io.Serializable;
 import java.util.Objects;
@@ -28,6 +28,12 @@ public class User implements Serializable {
         this.id = id;
         this.name = name;
         this.email = email;
+    }
+
+    public void updateData(UserDTO dados) {
+        if (dados.getId() != null) this.id = dados.getId();
+        if (dados.getName() != null) this.name = dados.getName();
+        if (dados.getEmail() != null) this.email = dados.getEmail();
     }
 
     public String getId() {

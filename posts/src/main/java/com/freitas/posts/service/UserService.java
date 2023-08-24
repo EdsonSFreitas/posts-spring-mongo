@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * @author Edson da Silva Freitas
@@ -42,6 +43,18 @@ public class UserService {
     public void delete(String id) {
         User user = findById(id); //Se id nao existir lanca excecao desse metodo
         repository.deleteById(user.getId());
+    }
+
+
+    public User update(User obj) {
+        User newObj = repository.findById(obj.getId()).orElseThrow(() -> new ObjNotFoundException("Usuário não encontrado"));
+        updateData(newObj, obj);
+        return repository.save(newObj);
+    }
+
+    public void updateData(User newObj, User obj) {
+        newObj.setName(obj.getName());
+        newObj.setEmail(obj.getEmail());
     }
 
 }

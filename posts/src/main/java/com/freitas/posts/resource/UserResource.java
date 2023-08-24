@@ -5,6 +5,7 @@ import com.freitas.posts.dto.UserDTO;
 import com.freitas.posts.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -60,6 +61,7 @@ public class UserResource {
     }
 
     @DeleteMapping("/{id}")
+    @Transactional
     public ResponseEntity<Void> delete(@PathVariable String id) {
         User user = service.findById(id); //Lanca excecao se id nao existir
         service.delete(user.getId());

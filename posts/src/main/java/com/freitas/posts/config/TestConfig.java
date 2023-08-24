@@ -3,7 +3,6 @@ package com.freitas.posts.config;
 import com.freitas.posts.domain.Post;
 import com.freitas.posts.domain.User;
 import com.freitas.posts.dto.AuthorDTO;
-import com.freitas.posts.dto.UserDTO;
 import com.freitas.posts.repository.PostRepository;
 import com.freitas.posts.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,8 +11,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -49,9 +46,17 @@ public class TestConfig implements CommandLineRunner {
         Post post5 = new Post(null, LocalDate.now(), "Mais um dia pra conta", "Devagar e sempre", new AuthorDTO(u3));
         postRepository.saveAll(List.of(post1, post2, post3, post4, post5));
 
+        //Persiste usuario, persiste post e em outro bloco adiciona o post na lista do usuario
         User u6 = new User(null, "Freitas", "freitas@gmail.com");
         repository.save(u6); //Persistindo usuario para que receba o id antes de persistir o post devido a relacao com o author
-        Post post6 = new Post(null, LocalDate.now(), "Spring com MongoDB", "Estudando todo dia", new AuthorDTO(u6));
-        postRepository.saveAll(List.of(post6));
+        Post post6 = new Post(null, LocalDate.now(), "Spring boot com MongoDB", "Estudando 10h/dia", new AuthorDTO(u6));
+        postRepository.save(post6);
+
+        //Add posts aos usuarios
+        u1.addPostsAll(List.of(post1, post2, post3, post4));
+        u2.addPosts(post5);
+        u3.addPostsAll(List.of(post1, post2, post3, post4));
+        u6.addPosts(post6);
+        repository.saveAll(List.of(u1, u2, u3, u6));
     }
 }

@@ -1,11 +1,15 @@
 package com.freitas.posts.domain;
 
 import com.freitas.posts.dto.AuthorDTO;
+import com.freitas.posts.dto.CommentDTO;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -22,6 +26,7 @@ public class Post implements Serializable {
     private String title;
     private String body;
     private AuthorDTO author;
+    private List<CommentDTO> comments = new ArrayList<>();
 
     public Post() {
     }
@@ -32,6 +37,26 @@ public class Post implements Serializable {
         this.title = title;
         this.body = body;
         this.author = author;
+    }
+
+    public void addComment(CommentDTO comment) {
+        comments.add(comment);
+    }
+
+    public void addCommentAll(List<CommentDTO> comment) {
+        comments.addAll(comment);
+    }
+
+    public void removeComment(CommentDTO comment) {
+        comments.remove(comment);
+    }
+
+    public List<CommentDTO> getComments() {
+        return comments;
+    }
+
+    public void setComments(List<CommentDTO> comments) {
+        this.comments = comments;
     }
 
     public AuthorDTO getAuthor() {

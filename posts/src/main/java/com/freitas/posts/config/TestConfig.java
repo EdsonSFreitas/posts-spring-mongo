@@ -3,6 +3,7 @@ package com.freitas.posts.config;
 import com.freitas.posts.domain.Post;
 import com.freitas.posts.domain.User;
 import com.freitas.posts.dto.AuthorDTO;
+import com.freitas.posts.dto.CommentDTO;
 import com.freitas.posts.repository.PostRepository;
 import com.freitas.posts.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +12,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 
 import java.time.LocalDate;
+import java.time.Year;
 import java.util.List;
 
 /**
@@ -58,5 +60,15 @@ public class TestConfig implements CommandLineRunner {
         u3.addPostsAll(List.of(post1, post2, post3, post4));
         u6.addPosts(post6);
         repository.saveAll(List.of(u1, u2, u3, u6));
+
+        CommentDTO c1 = new CommentDTO("Boa viagem mano!", LocalDate.of(2020, 1, 25), new AuthorDTO(u1));
+        CommentDTO c2 = new CommentDTO("Aproveite", LocalDate.now(), new AuthorDTO(u2));
+        CommentDTO c3 = new CommentDTO("Tenha um ótimo dia!", LocalDate.now(), new AuthorDTO(u3));
+        CommentDTO c4 = new CommentDTO("Você consegue!", LocalDate.now(), new AuthorDTO(u4));
+        post1.addCommentAll(List.of(c1, c2));
+        post2.addCommentAll(List.of(c3));
+        post6.addCommentAll(List.of(c4));
+        postRepository.saveAll(List.of(post1, post2, post6));
+
     }
 }

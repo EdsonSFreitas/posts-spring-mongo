@@ -4,6 +4,8 @@ import com.freitas.posts.domain.Post;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @author Edson da Silva Freitas
@@ -17,6 +19,7 @@ public class PostDTO implements Serializable {
     private String title;
     private String body;
     private AuthorDTO author;
+    private List<CommentDTO> comments;
 
     public PostDTO() {
 
@@ -36,6 +39,7 @@ public class PostDTO implements Serializable {
         this.title = post.getTitle();
         this.body = post.getBody();
         this.author = post.getAuthor();
+        this.comments = post.getComments().stream().map(CommentDTO::new).collect(Collectors.toList());
     }
 
     public PostDTO(PostDTO postDTO) {
@@ -60,5 +64,9 @@ public class PostDTO implements Serializable {
 
     public AuthorDTO getAuthor() {
         return author;
+    }
+
+    public List<CommentDTO> getComments() {
+        return comments;
     }
 }

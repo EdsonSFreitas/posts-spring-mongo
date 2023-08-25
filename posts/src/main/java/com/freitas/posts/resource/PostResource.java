@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
+import java.time.LocalDate;
 import java.util.List;
 
 /**
@@ -49,6 +50,20 @@ public class PostResource {
         final Page<PostDTO> byTitleContaining = service.searchByTitle(DecoderURLParam.decodeParam(text), pageable);
         return ResponseEntity.ok().body(byTitleContaining);
         //Teste http://meu.dominio.interno:8080/posts/titlesearch?text=Boa&page=0&size=3&sort=id,asc
+    }
+
+    @GetMapping("/fullsearch")
+    public ResponseEntity<Page<PostDTO>> fullSearchIgnorecase(
+            @RequestParam(value = "text", defaultValue = "") String text,
+            @RequestParam(value = "minDate", defaultValue = "") String dateMin,
+            @RequestParam(value = "maxDate", defaultValue = "") String dateMax,
+            @PageableDefault(size = 20, page = 0, sort = {"id"}) Pageable pageable
+    ) {
+        final LocalDate localDateMin = DecoderURLParam.convertDateParam(dateMin, LocalDate.of(2000, 1, 1));
+        final LocalDate localDateMax = DecoderURLParam.convertDateParam(dateMax, LocalDate.now());
+        final Page<PostDTO> searchFull = service.fullSearch(DecoderURLParam.decodeParam(text), localDateMin, localDateMax, pageable);
+        return ResponseEntity.ok().body(searchFull);
+        //Teste http://meu.dominio.interno:8080/posts/fullsearch?text=Continua&minDate=2023-08-23&maxDate=2023-08-27&page=0&size=10&sort=string
     }
 
     @GetMapping

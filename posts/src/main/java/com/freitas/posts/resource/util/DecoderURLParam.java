@@ -3,6 +3,9 @@ package com.freitas.posts.resource.util;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 
 /**
  * Lida com espaço no requestParam do PostResource
@@ -17,6 +20,14 @@ public class DecoderURLParam {
             return URLDecoder.decode(text, StandardCharsets.UTF_8.toString());
         } catch (UnsupportedEncodingException e) {
             return " ";
+        }
+    }
+
+    public static LocalDate convertDateParam(String textDate, LocalDate defaultValue) {
+        try {
+            return LocalDate.parse(textDate);
+        } catch (Exception e) {
+            return defaultValue;
         }
     }
 }

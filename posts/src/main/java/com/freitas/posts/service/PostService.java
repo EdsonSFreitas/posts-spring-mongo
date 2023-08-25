@@ -5,6 +5,7 @@ import com.freitas.posts.dto.AuthorDTO;
 import com.freitas.posts.dto.CommentDTO;
 import com.freitas.posts.dto.PostDTO;
 import com.freitas.posts.repository.PostRepository;
+import com.freitas.posts.resource.util.DecoderURLParam;
 import com.freitas.posts.service.exception.ObjNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -12,9 +13,8 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * @author Edson da Silva Freitas
@@ -51,6 +51,21 @@ public class PostService {
     /* Usando busca por titulo com @Query */
     public Page<PostDTO> searchByTitle(String text, Pageable pageable) {
         return repository.searchByTitle(text, pageable);
+    }
+
+    /**
+     * Retrieves a page of PostDTO objects that match the given search criteria.
+     *
+     * @param text     the text to search in title, body or comments
+     * @param minDate  the minimum date to filter the search results by
+     * @param maxDate  the maximum date to filter the search results by
+     * @param pageable the pagination information
+     * @return a page of PostDTO objects that match the search criteria
+     */
+    public Page<PostDTO> fullSearch(String text, LocalDate minDate, LocalDate maxDate, Pageable pageable) {
+        maxDate = maxDate.plusDays(1);
+        Page<Post> searchResults = repository.fullSearch(DecoderURLParam.decodeParam(text), minDate, maxDate, pageable);
+        return searchResults.map(PostDTO::new);
     }
 
     public Post addPost(String title, String body, AuthorDTO author) {

@@ -5,6 +5,10 @@ import com.freitas.posts.domain.User;
 import com.freitas.posts.dto.UserDTO;
 import com.freitas.posts.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
@@ -25,8 +29,16 @@ public class UserResource {
     private UserService service;
 
     @GetMapping
-    public ResponseEntity<List<UserDTO>> findAll() {
-        return ResponseEntity.ok().body(service.findAll());
+    public ResponseEntity<Page<UserDTO>> findAll(
+            @PageableDefault(size = 20, page = 0, sort = {"id"}) Pageable pageable) {
+        {
+            if (pageable.getPageSize() > 20) {
+                pageable = PageRequest.of(pageable.getPageNumber(), 20);
+            }
+            Page<UserDTO> page = service.findAll(pageable);
+            return ResponseEntity.ok().body(page);
+        }
+        // Teste http://meu.dominio.interno:8080/users?page=0&size=3&sort=name
     }
 
     @GetMapping("/{id}")

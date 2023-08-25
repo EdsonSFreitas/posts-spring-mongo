@@ -6,6 +6,10 @@ import com.freitas.posts.dto.PostDTO;
 import com.freitas.posts.resource.util.DecoderURLParam;
 import com.freitas.posts.service.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -30,15 +34,31 @@ public class PostResource {
     }
 
     @GetMapping("/{id}/comments")
-    public ResponseEntity<List<CommentDTO>> findCommentsById(@PathVariable String id) {
-        List<CommentDTO> allCommentsByPostId = service.findAllCommentsByPostId(id);
+    public ResponseEntity<Page<CommentDTO>> findCommentsById(
+            @PathVariable String id,
+            @PageableDefault(size = 20, page = 0, sort = {"id"}) Pageable pageable) {
+        Page<CommentDTO> allCommentsByPostId = service.findAllCommentsByPostId(id, pageable);
         return ResponseEntity.ok().body(allCommentsByPostId);
     }
 
     @GetMapping("/titlesearch")
-    public ResponseEntity<List<Post>> findTitleContainingIgnoreCase(@RequestParam(value = "text", defaultValue = "") String text) {
-        final List<Post> byTitleContaining = service.findByTitleContainingIgnoreCase(DecoderURLParam.decodeParam(text));
+    public ResponseEntity<Page<Post>> findTitleContainingIgnoreCase(
+            @RequestParam(value = "text", defaultValue = "") String text,
+            @PageableDefault(size = 20, page = 0, sort = {"id"}) Pageable pageable
+    ) {
+        final Page<Post> byTitleContaining = service.findByTitleContainingIgnoreCase(DecoderURLParam.decodeParam(text), pageable);
         return ResponseEntity.ok().body(byTitleContaining);
+        //Teste http://meu.dominio.interno:8080/posts/titlesearch?text=Boa&page=0&size=3&sort=id,asc
+    }
+
+    @GetMapping
+    public ResponseEntity<Page<PostDTO>> findAll(
+            @PageableDefault(size = 20, page = 0, sort = {"id"}) Pageable pageable) {
+        if (pageable.getPageSize() > 20) {
+            pageable = PageRequest.of(pageable.getPageNumber(), 20);
+        }
+        Page<PostDTO> page = service.findAll(pageable);
+        return ResponseEntity.ok().body(page);
     }
 
 

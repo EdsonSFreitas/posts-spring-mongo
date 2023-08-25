@@ -7,6 +7,9 @@ import com.freitas.posts.dto.PostDTO;
 import com.freitas.posts.repository.PostRepository;
 import com.freitas.posts.service.exception.ObjNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -31,14 +34,17 @@ public class PostService {
         return repository.findById(id).map(PostDTO::new).orElseThrow(() -> new ObjNotFoundException("Objeto não encontrado!"));
     }
 
-    public List<CommentDTO> findAllCommentsByPostId(String id) {
-        Post post = repository.findById(id).orElseThrow(() -> new ObjNotFoundException("Objeto não encontrado!"));
-        List<CommentDTO> comments = post.getComments();
-        return comments.stream().map(CommentDTO::new).collect(Collectors.toList());
+    public Page<PostDTO> findAll(Pageable pageable) {
+        return repository.findAll(pageable).map(PostDTO::new);
     }
 
-    public List<Post> findByTitleContainingIgnoreCase(String text) {
-        return repository.findByTitleContainingIgnoreCase(text);
+    public Page<CommentDTO> findAllCommentsByPostId(String id, Pageable pageable) {
+        Post post = repository.findById(id).orElseThrow(() -> new ObjNotFoundException("Objeto não encontrado!"));
+        return new PageImpl<>(post.getComments(), pageable, post.getComments().size());
+    }
+
+    public Page<Post> findByTitleContainingIgnoreCase(String text, Pageable pageable) {
+        return repository.findByTitleContainingIgnoreCase(text, pageable);
     }
 
     public Post addPost(String title, String body, AuthorDTO author) {

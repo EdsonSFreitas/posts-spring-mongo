@@ -20,7 +20,7 @@ import java.util.List;
  * {@code @project} posts
  */
 @Configuration
-@Profile("dev")
+@Profile("test")
 public class TestConfig implements CommandLineRunner {
     @Autowired
     private UserRepository repository;

@@ -37,6 +37,10 @@ public class PostService {
         return comments.stream().map(CommentDTO::new).collect(Collectors.toList());
     }
 
+    public List<Post> findByTitleContainingIgnoreCase(String text) {
+        return repository.findByTitleContainingIgnoreCase(text);
+    }
+
     public Post addPost(String title, String body, AuthorDTO author) {
         Post post = new Post(null, LocalDateTime.now(), title, body, author);
         return repository.save(post);

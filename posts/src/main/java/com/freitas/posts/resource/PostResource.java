@@ -3,6 +3,7 @@ package com.freitas.posts.resource;
 import com.freitas.posts.domain.Post;
 import com.freitas.posts.dto.CommentDTO;
 import com.freitas.posts.dto.PostDTO;
+import com.freitas.posts.resource.util.DecoderURLParam;
 import com.freitas.posts.service.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -33,6 +34,13 @@ public class PostResource {
         List<CommentDTO> allCommentsByPostId = service.findAllCommentsByPostId(id);
         return ResponseEntity.ok().body(allCommentsByPostId);
     }
+
+    @GetMapping("/titlesearch")
+    public ResponseEntity<List<Post>> findTitleContainingIgnoreCase(@RequestParam(value = "text", defaultValue = "") String text) {
+        final List<Post> byTitleContaining = service.findByTitleContainingIgnoreCase(DecoderURLParam.decodeParam(text));
+        return ResponseEntity.ok().body(byTitleContaining);
+    }
+
 
     @PostMapping()
     public ResponseEntity<PostDTO> addPost(@RequestBody PostDTO dto) {

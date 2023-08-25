@@ -11,8 +11,7 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 
-import java.time.LocalDate;
-import java.time.Year;
+import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -41,17 +40,17 @@ public class TestConfig implements CommandLineRunner {
         repository.saveAll(List.of(u1, u2, u3, u4, u5));
 
         postRepository.deleteAll();
-        Post post1 = new Post(null, LocalDate.now(), "Partiu viagem", "Vou viajar sem data pra voltar. Abraços!", new AuthorDTO(u1));
-        Post post2 = new Post(null, LocalDate.now(), "Bom dia", "Hoje será um grande dia!", new AuthorDTO(u1));
-        Post post3 = new Post(null, LocalDate.now(), "Boa tarde", "Hoje será uma grande tarde!", new AuthorDTO(u2));
-        Post post4 = new Post(null, LocalDate.now(), "Olá", "Qualé?", new AuthorDTO(u3));
-        Post post5 = new Post(null, LocalDate.now(), "Mais um dia pra conta", "Devagar e sempre", new AuthorDTO(u3));
+        Post post1 = new Post(null, LocalDateTime.now(), "Partiu viagem", "Vou viajar sem data pra voltar. Abraços!", new AuthorDTO(u1));
+        Post post2 = new Post(null, LocalDateTime.now(), "Bom dia", "Hoje será um grande dia!", new AuthorDTO(u1));
+        Post post3 = new Post(null, LocalDateTime.now(), "Boa tarde", "Hoje será uma grande tarde!", new AuthorDTO(u2));
+        Post post4 = new Post(null, LocalDateTime.now(), "Olá", "Qualé?", new AuthorDTO(u3));
+        Post post5 = new Post(null, LocalDateTime.now(), "Mais um dia pra conta", "Devagar e sempre", new AuthorDTO(u3));
         postRepository.saveAll(List.of(post1, post2, post3, post4, post5));
 
         //Persiste usuario, persiste post e em outro bloco adiciona o post na lista do usuario
         User u6 = new User(null, "Freitas", "freitas@gmail.com");
         repository.save(u6); //Persistindo usuario para que receba o id antes de persistir o post devido a relacao com o author
-        Post post6 = new Post(null, LocalDate.now(), "Spring boot com MongoDB", "Estudando 10h/dia", new AuthorDTO(u6));
+        Post post6 = new Post(null, LocalDateTime.now(), "Spring boot com MongoDB", "Estudando 10h/dia", new AuthorDTO(u6));
         postRepository.save(post6);
 
         //Add posts aos usuarios
@@ -61,10 +60,10 @@ public class TestConfig implements CommandLineRunner {
         u6.addPosts(post6);
         repository.saveAll(List.of(u1, u2, u3, u6));
 
-        CommentDTO c1 = new CommentDTO("Boa viagem mano!", LocalDate.of(2020, 1, 25), new AuthorDTO(u1));
-        CommentDTO c2 = new CommentDTO("Aproveite", LocalDate.now(), new AuthorDTO(u2));
-        CommentDTO c3 = new CommentDTO("Tenha um ótimo dia!", LocalDate.now(), new AuthorDTO(u3));
-        CommentDTO c4 = new CommentDTO("Você consegue!", LocalDate.now(), new AuthorDTO(u4));
+        CommentDTO c1 = new CommentDTO("Boa viagem mano!", LocalDateTime.of(2020, 1, 25, 0, 0), new AuthorDTO(u1));
+        CommentDTO c2 = new CommentDTO("Aproveite", LocalDateTime.now(), new AuthorDTO(u2));
+        CommentDTO c3 = new CommentDTO("Tenha um ótimo dia!", LocalDateTime.now(), new AuthorDTO(u3));
+        CommentDTO c4 = new CommentDTO("Você consegue!", LocalDateTime.now(), new AuthorDTO(u4));
         post1.addCommentAll(List.of(c1, c2));
         post2.addCommentAll(List.of(c3));
         post6.addCommentAll(List.of(c4));

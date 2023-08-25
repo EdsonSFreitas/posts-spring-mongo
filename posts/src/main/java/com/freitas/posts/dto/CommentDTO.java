@@ -2,6 +2,7 @@ package com.freitas.posts.dto;
 
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 /**
  * @author Edson da Silva Freitas
@@ -12,13 +13,13 @@ public class CommentDTO implements Serializable {
     private static final long serialVersionUID = 1L;
 
     private String text;
-    private LocalDate date;
+    private LocalDateTime date;
     private AuthorDTO author;
 
     public CommentDTO() {
     }
 
-    public CommentDTO(String text, LocalDate date, AuthorDTO author) {
+    public CommentDTO(String text, LocalDateTime date, AuthorDTO author) {
         this.text = text;
         this.date = date;
         this.author = author;
@@ -32,11 +33,11 @@ public class CommentDTO implements Serializable {
         this.text = text;
     }
 
-    public LocalDate getDate() {
+    public LocalDateTime getDate() {
         return date;
     }
 
-    public void setDate(LocalDate date) {
+    public void setDate(LocalDateTime date) {
         this.date = date;
     }
 

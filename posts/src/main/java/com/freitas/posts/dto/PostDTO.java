@@ -3,7 +3,7 @@ package com.freitas.posts.dto;
 import com.freitas.posts.domain.Post;
 
 import java.io.Serializable;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 /**
  * @author Edson da Silva Freitas
@@ -13,7 +13,7 @@ import java.time.LocalDate;
 public class PostDTO implements Serializable {
     private static final long serialVersionUID = 1L;
     private String id;
-    private LocalDate date;
+    private LocalDateTime date;
     private String title;
     private String body;
     private AuthorDTO author;
@@ -22,7 +22,7 @@ public class PostDTO implements Serializable {
 
     }
 
-    public PostDTO(String id, LocalDate date, String title, String body, AuthorDTO author) {
+    public PostDTO(String id, LocalDateTime date, String title, String body, AuthorDTO author) {
         this.id = id;
         this.date = date;
         this.title = title;
@@ -30,7 +30,7 @@ public class PostDTO implements Serializable {
         this.author = author;
     }
 
-    public PostDTO(Post post){
+    public PostDTO(Post post) {
         this.id = post.getId();
         this.date = post.getDate();
         this.title = post.getTitle();
@@ -42,7 +42,7 @@ public class PostDTO implements Serializable {
         return id;
     }
 
-    public LocalDate getDate() {
+    public LocalDateTime getDate() {
         return date;
     }
 

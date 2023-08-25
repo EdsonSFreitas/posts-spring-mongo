@@ -3,11 +3,10 @@ package com.freitas.posts.domain;
 import com.freitas.posts.dto.AuthorDTO;
 import com.freitas.posts.dto.CommentDTO;
 import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.io.Serializable;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -22,7 +21,7 @@ public class Post implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     private String id;
-    private LocalDate date;
+    private LocalDateTime date;
     private String title;
     private String body;
     private AuthorDTO author;
@@ -31,7 +30,7 @@ public class Post implements Serializable {
     public Post() {
     }
 
-    public Post(String id, LocalDate date, String title, String body, AuthorDTO author) {
+    public Post(String id, LocalDateTime date, String title, String body, AuthorDTO author) {
         this.id = id;
         this.date = date;
         this.title = title;
@@ -75,11 +74,11 @@ public class Post implements Serializable {
         this.id = id;
     }
 
-    public LocalDate getDate() {
+    public LocalDateTime getDate() {
         return date;
     }
 
-    public void setDate(LocalDate date) {
+    public void setDate(LocalDateTime date) {
         this.date = date;
     }
 

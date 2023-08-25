@@ -1,14 +1,15 @@
 package com.freitas.posts.resource;
 
 import com.freitas.posts.domain.Post;
+import com.freitas.posts.dto.CommentDTO;
 import com.freitas.posts.dto.PostDTO;
 import com.freitas.posts.service.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+
+import java.net.URI;
 
 /**
  * @author Edson da Silva Freitas
@@ -25,4 +26,23 @@ public class PostResource {
     public ResponseEntity<PostDTO> findById(@PathVariable String id) {
         return ResponseEntity.ok().body(service.findById(id));
     }
+
+    @PostMapping()
+    public ResponseEntity<PostDTO> addPost(@RequestBody PostDTO dto) {
+        Post post = service.addPost(dto.getTitle(), dto.getBody(), dto.getAuthor());
+        PostDTO postDTo = new PostDTO(post.getId(), post.getDate(), post.getTitle(), post.getBody(), post.getAuthor());
+        URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
+                .buildAndExpand(post.getId()).toUri();
+        return ResponseEntity.created(uri).body(postDTo);
+    }
+
+    @PostMapping("/{id}/addcomment")
+    public ResponseEntity<PostDTO> addComment(@PathVariable String id, @RequestBody CommentDTO dto) {
+        Post post = service.addComment(id, dto.getText(), dto.getAuthor());
+        PostDTO postDTo = new PostDTO(post.getId(), post.getDate(), post.getTitle(), post.getBody(), post.getAuthor());
+        URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
+                .buildAndExpand(post.getId()).toUri();
+        return ResponseEntity.created(uri).body(postDTo);
+    }
+
 }

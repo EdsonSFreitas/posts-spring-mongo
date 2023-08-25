@@ -60,13 +60,15 @@ public class TestConfig implements CommandLineRunner {
         u6.addPosts(post6);
         repository.saveAll(List.of(u1, u2, u3, u6));
 
+        //Add comentarios aos posts
         CommentDTO c1 = new CommentDTO("Boa viagem mano!", LocalDateTime.of(2020, 1, 25, 0, 0), new AuthorDTO(u1));
         CommentDTO c2 = new CommentDTO("Aproveite", LocalDateTime.now(), new AuthorDTO(u2));
         CommentDTO c3 = new CommentDTO("Tenha um ótimo dia!", LocalDateTime.now(), new AuthorDTO(u3));
         CommentDTO c4 = new CommentDTO("Você consegue!", LocalDateTime.now(), new AuthorDTO(u4));
+        CommentDTO c5 = new CommentDTO("Continua...!", LocalDateTime.now(), new AuthorDTO(u5));
         post1.addCommentAll(List.of(c1, c2));
         post2.addCommentAll(List.of(c3));
-        post6.addCommentAll(List.of(c4));
+        post6.addCommentAll(List.of(c4,c5));
         postRepository.saveAll(List.of(post1, post2, post6));
 
     }

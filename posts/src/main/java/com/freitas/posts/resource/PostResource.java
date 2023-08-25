@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
+import java.util.List;
 
 /**
  * @author Edson da Silva Freitas
@@ -25,6 +26,12 @@ public class PostResource {
     @GetMapping("/{id}")
     public ResponseEntity<PostDTO> findById(@PathVariable String id) {
         return ResponseEntity.ok().body(service.findById(id));
+    }
+
+    @GetMapping("/{id}/comments")
+    public ResponseEntity<List<CommentDTO>> findCommentsById(@PathVariable String id) {
+        List<CommentDTO> allCommentsByPostId = service.findAllCommentsByPostId(id);
+        return ResponseEntity.ok().body(allCommentsByPostId);
     }
 
     @PostMapping()

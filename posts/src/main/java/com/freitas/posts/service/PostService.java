@@ -1,7 +1,6 @@
 package com.freitas.posts.service;
 
 import com.freitas.posts.domain.Post;
-import com.freitas.posts.domain.User;
 import com.freitas.posts.dto.AuthorDTO;
 import com.freitas.posts.dto.CommentDTO;
 import com.freitas.posts.dto.PostDTO;
@@ -10,8 +9,9 @@ import com.freitas.posts.service.exception.ObjNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @author Edson da Silva Freitas
@@ -23,12 +23,18 @@ public class PostService {
     @Autowired
     private PostRepository repository;
 
+    public static Post fromDTO(PostDTO dto) {
+        return new Post(dto.getId(), dto.getDate(), dto.getTitle(), dto.getBody(), dto.getAuthor());
+    }
+
     public PostDTO findById(String id) {
         return repository.findById(id).map(PostDTO::new).orElseThrow(() -> new ObjNotFoundException("Objeto não encontrado!"));
     }
 
-    public static Post fromDTO(PostDTO dto) {
-        return new Post(dto.getId(), dto.getDate(), dto.getTitle(), dto.getBody(), dto.getAuthor());
+    public List<CommentDTO> findAllCommentsByPostId(String id) {
+        Post post = repository.findById(id).orElseThrow(() -> new ObjNotFoundException("Objeto não encontrado!"));
+        List<CommentDTO> comments = post.getComments();
+        return comments.stream().map(CommentDTO::new).collect(Collectors.toList());
     }
 
     public Post addPost(String title, String body, AuthorDTO author) {

@@ -7,6 +7,7 @@ import com.freitas.posts.dto.PostDTO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.mongodb.repository.MongoRepository;
+import org.springframework.data.mongodb.repository.Query;
 
 import java.util.List;
 
@@ -18,4 +19,7 @@ import java.util.List;
 public interface PostRepository extends MongoRepository<Post, String> {
     Page<PostDTO> findByTitleContainingIgnoreCase(String text, Pageable pageable);
     Page<CommentDTO> findAllCommentsById (String id, Pageable pageable);
+    /* https://docs.spring.io/spring-data/mongodb/docs/current/reference/html/#query-by-example.running */
+    @Query("{ 'title': { $regex: ?0, $options: 'i' } }")
+    Page<PostDTO> searchByTitle(String text, Pageable pageable);
 }

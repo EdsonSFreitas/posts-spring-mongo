@@ -43,8 +43,14 @@ public class PostService {
         return new PageImpl<>(post.getComments(), pageable, post.getComments().size());
     }
 
+    /* Usando busca por titulo com Query Method */
     public Page<PostDTO> findByTitleContainingIgnoreCase(String text, Pageable pageable) {
         return repository.findByTitleContainingIgnoreCase(text, pageable);
+    }
+
+    /* Usando busca por titulo com @Query */
+    public Page<PostDTO> searchByTitle(String text, Pageable pageable) {
+        return repository.searchByTitle(text, pageable);
     }
 
     public Post addPost(String title, String body, AuthorDTO author) {

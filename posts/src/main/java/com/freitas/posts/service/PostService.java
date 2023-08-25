@@ -43,7 +43,7 @@ public class PostService {
         return new PageImpl<>(post.getComments(), pageable, post.getComments().size());
     }
 
-    public Page<Post> findByTitleContainingIgnoreCase(String text, Pageable pageable) {
+    public Page<PostDTO> findByTitleContainingIgnoreCase(String text, Pageable pageable) {
         return repository.findByTitleContainingIgnoreCase(text, pageable);
     }
 

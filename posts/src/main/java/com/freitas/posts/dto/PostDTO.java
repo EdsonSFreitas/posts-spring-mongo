@@ -38,6 +38,10 @@ public class PostDTO implements Serializable {
         this.author = post.getAuthor();
     }
 
+    public PostDTO(PostDTO postDTO) {
+
+    }
+
     public String getId() {
         return id;
     }

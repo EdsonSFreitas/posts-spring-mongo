@@ -42,11 +42,11 @@ public class PostResource {
     }
 
     @GetMapping("/titlesearch")
-    public ResponseEntity<Page<Post>> findTitleContainingIgnoreCase(
+    public ResponseEntity<Page<PostDTO>> findTitleContainingIgnoreCase(
             @RequestParam(value = "text", defaultValue = "") String text,
             @PageableDefault(size = 20, page = 0, sort = {"id"}) Pageable pageable
     ) {
-        final Page<Post> byTitleContaining = service.findByTitleContainingIgnoreCase(DecoderURLParam.decodeParam(text), pageable);
+        final Page<PostDTO> byTitleContaining = service.findByTitleContainingIgnoreCase(DecoderURLParam.decodeParam(text), pageable);
         return ResponseEntity.ok().body(byTitleContaining);
         //Teste http://meu.dominio.interno:8080/posts/titlesearch?text=Boa&page=0&size=3&sort=id,asc
     }

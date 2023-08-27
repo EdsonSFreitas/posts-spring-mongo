@@ -20,7 +20,7 @@ import java.util.List;
  * {@code @project} posts
  */
 @Configuration
-@Profile("test")
+@Profile("dev")
 public class TestConfig implements CommandLineRunner {
     @Autowired
     private UserRepository repository;
@@ -32,16 +32,16 @@ public class TestConfig implements CommandLineRunner {
     public void run(String... args) throws Exception {
 
         repository.deleteAll();
-        User u1 = new User(null, "Maria Brown", "maria@gmail.com");
-        User u2 = new User(null, "Alex Green", "alex@gmail.com");
+        User u1 = new User("64e8f66a021d400766c2f102", "Maria Brown", "maria@gmail.com");
+        User u2 = new User("64e8f66a021d400766c2f103", "Alex Green", "alex@gmail.com");
         User u3 = new User(null, "Bob Grey", "bob@gmail.com");
         User u4 = new User(null, "Ruby", "ruby@gmail.com");
         User u5 = new User(null, "Maribel", "maribel@gmail.com");
         repository.saveAll(List.of(u1, u2, u3, u4, u5));
 
         postRepository.deleteAll();
-        Post post1 = new Post(null, LocalDateTime.now(), "Partiu viagem", "Vou viajar sem data pra voltar. Abraços!", new AuthorDTO(u1));
-        Post post2 = new Post(null, LocalDateTime.now(), "Bom dia", "Hoje será um grande dia!", new AuthorDTO(u1));
+        Post post1 = new Post("64ea69ef38031f486ab9e79a", LocalDateTime.now(), "Partiu viagem", "Vou viajar sem data pra voltar. Abraços!", new AuthorDTO(u1));
+        Post post2 = new Post("64ea69ef38031f486ab9e79b", LocalDateTime.now(), "Bom dia", "Hoje será um grande dia!", new AuthorDTO(u1));
         Post post3 = new Post(null, LocalDateTime.now(), "Boa tarde", "Hoje será uma grande tarde!", new AuthorDTO(u2));
         Post post4 = new Post(null, LocalDateTime.now(), "Olá", "Qualé?", new AuthorDTO(u3));
         Post post5 = new Post(null, LocalDateTime.now(), "Mais um dia pra conta", "Devagar e sempre", new AuthorDTO(u3));

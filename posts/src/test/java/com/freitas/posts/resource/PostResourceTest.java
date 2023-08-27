@@ -81,7 +81,7 @@ class PostResourceTest {
         // Mock o comportamento do serviço para retornar a página
         when(postService.findAll(any(Pageable.class))).thenReturn(page);
 
-        // Execute a solicitação GET para /posts?page=0&size=5&sort=id
+        // Execute a solicitação GET para /posts?page=0&size=2&sort=id
         mockMvc.perform(MockMvcRequestBuilders.get("/posts?page=0&size=2&sort=id"))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON))

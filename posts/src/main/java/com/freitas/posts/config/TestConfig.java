@@ -12,7 +12,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 
 import java.time.LocalDateTime;
-import java.util.List;
+import java.util.Arrays;
 
 /**
  * @author Edson da Silva Freitas
@@ -37,7 +37,7 @@ public class TestConfig implements CommandLineRunner {
         User u3 = new User(null, "Bob Grey", "bob@gmail.com");
         User u4 = new User(null, "Ruby", "ruby@gmail.com");
         User u5 = new User(null, "Maribel", "maribel@gmail.com");
-        repository.saveAll(List.of(u1, u2, u3, u4, u5));
+        repository.saveAll(Arrays.asList(u1, u2, u3, u4, u5));
 
         postRepository.deleteAll();
         Post post1 = new Post("64ea69ef38031f486ab9e79a", LocalDateTime.now(), "Partiu viagem", "Vou viajar sem data pra voltar. Abraços!", new AuthorDTO(u1));
@@ -45,7 +45,7 @@ public class TestConfig implements CommandLineRunner {
         Post post3 = new Post(null, LocalDateTime.now(), "Boa tarde", "Hoje será uma grande tarde!", new AuthorDTO(u2));
         Post post4 = new Post(null, LocalDateTime.now(), "Olá", "Qualé?", new AuthorDTO(u3));
         Post post5 = new Post(null, LocalDateTime.now(), "Mais um dia pra conta", "Devagar e sempre", new AuthorDTO(u3));
-        postRepository.saveAll(List.of(post1, post2, post3, post4, post5));
+        postRepository.saveAll(Arrays.asList(post1, post2, post3, post4, post5));
 
         //Persiste usuario, persiste post e em outro bloco adiciona o post na lista do usuario
         User u6 = new User(null, "Freitas", "freitas@gmail.com");
@@ -54,11 +54,11 @@ public class TestConfig implements CommandLineRunner {
         postRepository.save(post6);
 
         //Add posts aos usuarios
-        u1.addPostsAll(List.of(post1, post2, post3, post4));
+        u1.addPostsAll(Arrays.asList(post1, post2, post3, post4));
         u2.addPosts(post5);
-        u3.addPostsAll(List.of(post1, post2, post3, post4));
+        u3.addPostsAll(Arrays.asList(post1, post2, post3, post4));
         u6.addPosts(post6);
-        repository.saveAll(List.of(u1, u2, u3, u6));
+        repository.saveAll(Arrays.asList(u1, u2, u3, u6));
 
         //Add comentarios aos posts
         CommentDTO c1 = new CommentDTO("Boa viagem mano!", LocalDateTime.of(2020, 1, 25, 0, 0), new AuthorDTO(u1));
@@ -66,10 +66,10 @@ public class TestConfig implements CommandLineRunner {
         CommentDTO c3 = new CommentDTO("Tenha um ótimo dia!", LocalDateTime.now(), new AuthorDTO(u3));
         CommentDTO c4 = new CommentDTO("Você consegue!", LocalDateTime.now(), new AuthorDTO(u4));
         CommentDTO c5 = new CommentDTO("Continua...!", LocalDateTime.now(), new AuthorDTO(u5));
-        post1.addCommentAll(List.of(c1, c2));
-        post2.addCommentAll(List.of(c3));
-        post6.addCommentAll(List.of(c4,c5));
-        postRepository.saveAll(List.of(post1, post2, post6));
+        post1.addCommentAll(Arrays.asList(c1, c2));
+        post2.addCommentAll(Arrays.asList(c3));
+        post6.addCommentAll(Arrays.asList(c4, c5));
+        postRepository.saveAll(Arrays.asList(post1, post2, post6));
 
     }
 }

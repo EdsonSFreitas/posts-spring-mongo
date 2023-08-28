@@ -5,7 +5,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.ComponentScan;
 
 @SpringBootApplication
-//@ComponentScan("com.freitas.posts")
+@ComponentScan("com.freitas.posts")
 public class PostsApplication {
 
 	public static void main(String[] args) {
